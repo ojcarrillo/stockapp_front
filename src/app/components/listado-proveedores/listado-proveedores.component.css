@@ -1,0 +1,18 @@
+.mat-column-id,
+.mat-column-activo {
+    color: #333;
+    text-align: center !important;
+    padding-left: 5px;
+    flex: 70px 0 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.mat-column-nit {
+    color: #333;
+    text-align: center !important;
+    padding-left: 5px;
+    flex: 120px 0 0;
+    display: flex;
+    justify-content: flex-start;
+}

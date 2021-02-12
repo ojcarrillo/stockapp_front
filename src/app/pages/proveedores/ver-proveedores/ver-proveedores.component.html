@@ -1,0 +1,87 @@
+<div class="table-responsive-sm">
+    <div class="row">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Proveedores</h2>
+                    <app-listado-proveedores (selectProveedor)="seleccionarProveedor($event)"></app-listado-proveedores>
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Información del Proveedor</h2>
+                    <div class="rcorners5px">
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="">Nombre:</label>
+                            </div>
+                            <div class="col">
+                                <label for="form-control">{{proveedorSel.nombre}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="">Nit:</label>
+                            </div>
+                            <div class="col">
+                                <label for="form-control">{{proveedorSel.nit}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="">Teléfono(s):</label>
+                            </div>
+                            <div class="col">
+                                <label for="form-control">{{proveedorSel.telefono}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="">Dirección:</label>
+                            </div>
+                            <div class="col">
+                                <label for="form-control">{{proveedorSel.direccion}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">
+                                <label for="">Activo:</label>
+                            </div>
+                            <div class="col">
+                                <i class="fa" [ngClass]="{
+                                        'fa-check-square': proveedorSel.activo == true,
+                                        'fa-window-close': proveedorSel.activo == false
+                                    }">
+                                </i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Facturas del Proveedor</h2>
+
+                    <app-listado-proveedores [pageSize]="10"></app-listado-proveedores>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Estado de la Factura</h2>
+                    <app-listado-articulos [verFiltro]="true" [pageSize]="5"></app-listado-articulos>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

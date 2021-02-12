@@ -1,0 +1,110 @@
+<div class="table-responsive-sm col">
+    <mat-tab-group animationDuration="0ms" [(selectedIndex)]="tabIndex" class="nav nav-tabs">
+        <mat-tab label="Crear / Editar" class="nav-item nav-link">
+            <form class="form-bordered" id="form" autocomplete="off" [formGroup]="guardarForm" (ngSubmit)="guardar()">
+                <div class="row p-2">
+                </div>
+                <div class="row p-2">
+                    <div class="col-10">
+                        <label for="">Nombre Genérico:</label>
+                        <input type="text" formControlName="nombreGenerico" class="form-control" placeholder="Digite el nombre genérico del artículo" />
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-10">
+                        <label for="">Nombre Comercial:</label>
+                        <input type="text" formControlName="nombreComercial" class="form-control" placeholder="Digite el nombre comercial del artículo" />
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-3">
+                        <label for="">Valor de Compra:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input type="text" formControlName="valorCompra" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" />
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <label for="">Valor de Venta:</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input type="text" formControlName="valorVenta" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-4">
+                        <label for="">Unidad de Compra:</label>
+                        <mat-select class="form-control" [formControlName]="'unidadcompra'" [compareWith]="compareObjectsId">
+                            <mat-label class="mat-option">Seleccione una opción...</mat-label>
+                            <mat-option *ngFor="let item of unidadesCompra" [value]="item">{{item.nombre}}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="col-1">
+                        <label for="">Conversión:</label>
+                        <input type="text" formControlName="conversion" appDigitOnly placeholder="1" inputmode="numeric" pattern="^\d{1,9}$" class="form-control text-right" />
+                    </div>
+                    <div class="col-4">
+                        <label for="">Unidad de venta:</label>
+                        <mat-select class="form-control" [formControlName]="'unidadventa'" [compareWith]="compareObjectsId">
+                            <mat-label class="mat-option">Seleccione una opción...</mat-label>
+                            <mat-option *ngFor="let item of unidadesVenta" [value]="item">{{item.nombre}}</mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-4">
+                        <label for="">Tipo de Articulo:</label>
+                        <mat-select class="form-control" [formControlName]="'tipoarticulo'" [compareWith]="compareObjectsId">
+                            <mat-label class="mat-option">Seleccione una opción...</mat-label>
+                            <mat-option *ngFor="let item of tipoArticulos" [value]="item">{{item.nombre}}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="col-2">
+                        <label for="">Iva:</label>
+                        <mat-select class="form-control" [formControlName]="'iva'" [compareWith]="compareObjectsId">
+                            <mat-label class="mat-option">Seleccione una opción...</mat-label>
+                            <mat-option *ngFor="let item of ivas" [value]="item">{{item.nombre}}</mat-option>
+                        </mat-select>
+                    </div>
+                    <div class="col-4">
+                        <label for="">Presentación:</label>
+                        <mat-select class="form-control" [formControlName]="'presentacion'" [compareWith]="compareObjectsId">
+                            <mat-label class="mat-option">Seleccione una opción...</mat-label>
+                            <mat-option *ngFor="let item of presentaciones" [value]="item">{{item.nombre}}</mat-option>
+                        </mat-select>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-3">
+                        <label for="">Cantidad Existencias:</label>
+                        <input type="text" formControlName="existencias" appDigitOnly placeholder="0" inputmode="numeric" pattern="^\d{1,9}$" class="form-control text-right" />
+                    </div>
+                    <div class="col-3">
+                        <label for="">Cantidad Mínima de Existencias:</label>
+                        <input type="text" formControlName="existenciasMinimas" appDigitOnly placeholder="0" inputmode="numeric" pattern="^\d{1,9}$" class="form-control text-right" />
+                    </div>
+                    <div class="col text-left">
+                        <div class="row">
+                            <div class="col">
+                                <div class="checkbox">
+                                    <label class="p-2">Activo:</label>
+                                    <input class="form-check-input" type="checkbox" id="checkboxNoLabel" formControlName="activo" aria-label="..." />
+                                    <label for="checkboxNoLabel">&nbsp;</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col text-right">
+                        <button type="submit" class="btn btn-info" [disabled]="guardarForm.invalid">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </mat-tab>
+        <mat-tab label="Listado" class="nav-item nav-link">
+            <app-listado-articulos [verBtnEditar]="true" (selectArticulo)="editar($event)"></app-listado-articulos>
+        </mat-tab>
+    </mat-tab-group>
+</div>

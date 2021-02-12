@@ -1,0 +1,71 @@
+<div class="table-responsive-sm">
+
+    <form class="form-material" id="form" autocomplete="off" [formGroup]="guardarForm" (ngSubmit)="guardar()">
+        <div class="col-12">
+            <div class="row">
+                <div class="col">
+                    <label for="">Razón Social:</label>
+                    <input type="text" class="form-control" formControlName="razonSocial" placeholder="Dígite la razón social" />
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col">
+                            <label for="">Nit:</label>
+                            <input type="text" formControlName="nit" class="form-control" placeholder="Digite el Nit" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col">
+                            <label for="">Régimen:</label>
+                            <select class="form-control" formControlName="regimen">
+                        <option value="comun">Común</option>
+                        <option value="simplificado">Simplificado</option>
+                    </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col">
+                    <label for="">Dirección:</label>
+                    <input type="text" class="form-control" formControlName="direccion" placeholder="Digite la dirección" />
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-6">
+                    <label for="">Resolución No.:</label>
+                    <input type="text" class="form-control" formControlName="resolucion" placeholder="Digite el Número de Resolución:" />
+                </div>
+                <div class="col-6">
+                    <label for="">Fecha de la Resolución:</label>
+                    <input type="date" class="form-control" formControlName="fechaResolucion" />
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-6 p-2">
+                    <label for="">Prefijo:</label>
+                    <input type="text" class="form-control" formControlName="prefijo" />
+                </div>
+                <div class="col-6">
+                    <div class="row p-2">
+                        <label for="">Inicio de la Numeración:</label>
+                        <input type="number" class="form-control" formControlName="inicioNumeracion" />
+                    </div>
+                    <div class="row p-2">
+                        <label for="">Fin de la Numeración:</label>
+                        <input type="number" class="form-control" formControlName="finNumeracion" />
+                    </div>
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col text-right">
+                    <button class="btn btn-info" type="submit" [disabled]="guardarForm.invalid">Actualizar Información</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

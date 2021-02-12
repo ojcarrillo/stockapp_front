@@ -1,0 +1,79 @@
+<div class="table-responsive-sm col">
+
+    <form class="form-material" id="form" autocomplete="off" [formGroup]="guardarForm" (ngSubmit)="guardar()">
+        <div class="row p-2">
+            <div class="col">
+                <label>Crear / Editar</label>
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col-8">
+                <label for="">Nombre:</label>
+                <input type="text" formControlName="nombre" class="form-control" size="40" placeholder="Digite el nombre del proveedor" />
+            </div>
+            <div class="col">
+                <label for=""> Nit:</label>
+                <input type="text" formControlName="nit" class="form-control" size="40" placeholder="Digite el nit del proveedor" />
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col-8">
+                <label for="">Dirección:</label>
+                <input type="text" formControlName="direccion" class="form-control" name="" id="" placeholder="Digite la dirección" />
+            </div>
+            <div class="col">
+                <label for="">Teléfono(s):</label>
+                <input type="text" formControlName="telefono" class="form-control" name="" id="" placeholder="Digite el(los) Teléfono(s)" />
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col text-left">
+                <div class="row">
+                    <div class="col">
+                        <div class="checkbox">
+                            <label class="p-2">Activo:</label>
+                            <input class="form-check-input" type="checkbox" id="checkboxNoLabel" formControlName="activo" aria-label="..." />
+                            <label for="checkboxNoLabel">&nbsp;</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col text-right">
+                <button type="submit" class="btn btn-info" [disabled]="guardarForm.invalid">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="table-responsive-sm col">
+    <label><h1>Listado</h1></label>
+    <mat-table #table [dataSource]="dataSource" class="table-striped">
+        <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
+            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"> {{column.value}}</mat-header-cell>
+            <ng-container *ngIf="column.id !== 'activo'; else activo">
+                <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id]}}</mat-cell>
+            </ng-container>
+            <ng-template #activo>
+                <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id] ? 'Si' : 'No'}}</mat-cell>
+            </ng-template>
+        </ng-container>
+        <ng-container matColumnDef="opciones">
+            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"></mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <div>&nbsp;</div>
+                <a data-toggle="tooltip" data-original-title="Editar" class="btn cursor" (click)="editar(element)">
+                    <i class="fa fa-pencil text-info"></i>
+                </a>
+                <span>&nbsp;</span>
+                <a data-toggle="tooltip" data-original-title="Eliminar" class="btn cursor" (click)="eliminar(element)">
+                    <i class="fa fa-trash text-danger"></i>
+                </a>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{gray: even}"></mat-row>
+    </mat-table>
+
+    <mat-paginator appPagination [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" [length]="totalElements" (page)="nextPage($event)" itemsPerPageLabel="hola" showFirstLastButtons></mat-paginator>
+
+</div>

@@ -1,0 +1,49 @@
+<div class="table-responsive-sm col-6">
+
+    <form class="form-material" id="form" autocomplete="off" [formGroup]="guardarForm" (ngSubmit)="guardar()">
+        <div class="row p-2">
+            <div class="col">
+                <label><h1>Crear / Editar</h1></label>
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col">
+                <label>Nombre:</label>
+                <input type="text" formControlName="nombre" class="form-control" size="40" placeholder="Digite el nombre del tipo de artículo" />
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col text-right">
+                <button type="submit" class="btn btn-info" [disabled]="guardarForm.invalid">Guardar</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="table-responsive-sm col">
+    <label><h1>Listado</h1></label>
+    <mat-table #table [dataSource]="dataSource" class="table-striped">
+        <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
+            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"> {{column.value}}</mat-header-cell>
+            <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id]}}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="opciones">
+            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"></mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <div>&nbsp;</div>
+                <a data-toggle="tooltip" data-original-title="Editar" class="btn cursor" (click)="editar(element)">
+                    <i class="fa fa-pencil text-info"></i>
+                </a>
+                <span>&nbsp;</span>
+                <a data-toggle="tooltip" data-original-title="Eliminar" class="btn cursor" (click)="eliminar(element)">
+                    <i class="fa fa-trash text-danger"></i>
+                </a>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{gray: even}"></mat-row>
+    </mat-table>
+
+    <mat-paginator appPagination [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" [length]="totalElements" (page)="nextPage($event)" itemsPerPageLabel="hola" showFirstLastButtons></mat-paginator>
+
+</div>

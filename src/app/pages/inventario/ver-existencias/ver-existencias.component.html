@@ -1,0 +1,121 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body ">
+                <h1 class="card-title">Detalle del Artículo</h1>
+                <div class="rcorners5px">
+                    <div class="row p-2">
+                        <div class="col-2 p-2">
+                            <label for="">Nombre Genérico:</label>
+                        </div>
+                        <div class="col">
+                            <div class="border rounded p-2">{{articuloSel.nombreGenerico}}</div>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-2 p-2">
+                            <label for="">Nombre Comercial:</label>
+                        </div>
+                        <div class="col">
+                            <div class="border rounded p-2">{{articuloSel.nombreComercial}}</div>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-2 p-2">
+                            <label for="">Unidad de Compra:</label>
+                        </div>
+                        <div class="col-2 p-2">
+                            <label for="">Valor de Compra:</label>
+                        </div>
+                        <div class="col-2 p-2">
+                            <label for="">Conversión:</label>
+                        </div>
+                        <div class="col-2 p-2">
+                            <label for="">Unidad de Venta:</label>
+                        </div>
+                        <div class="col-2 p-2">
+                            <label for="">Valor de Venta:</label>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-2 p-2">
+                            <div class="border rounded p-2">{{articuloSel.unidadcompra?.nombre}}</div>
+                        </div>
+                        <div class="col-2 p-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <div class="border rounded p-2">{{articuloSel.valorCompra | number:'1.2' }}</div>
+                            </div>
+                        </div>
+                        <div class="col-2 p-2">
+                            <div class="border rounded p-2">{{articuloSel.conversion}}</div>
+                        </div>
+                        <div class="col-2 p-2">
+                            <div class="border rounded p-2">{{articuloSel.unidadventa?.nombre}}</div>
+                        </div>
+                        <div class="col-2 p-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <div class="border rounded p-2">{{articuloSel.valorVenta | number:'1.2' }}</div>
+                            </div>
+                        </div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-2 p-2">
+                            <label for="">Tipo de Articulo:</label>
+                        </div>
+                        <div class="col-2 p-2">
+                            <div class="border rounded p-2">{{articuloSel.tipoarticulo?.nombre}}</div>
+                        </div>
+                        <div class="col-2 p-2">
+                            <label for="">Iva:</label>
+                        </div>
+                        <div class="col-2 p-2">
+                            <div class="border rounded p-2">{{articuloSel.iva?.nombre}}</div>
+                        </div>
+                        <div class="col-2 p-2">
+                            <label for="">Presentación:</label>
+                        </div>
+                        <div class="col-2 p-2">
+                            <div class="border rounded p-2">{{articuloSel.presentacion?.nombre}}</div>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-2 p-2">
+                            <label for="">Cantidad Existencias:</label>
+                        </div>
+                        <div class="col-2 p-2">
+                            <div class="border rounded p-2">{{articuloSel.existencias}}</div>
+                        </div>
+                        <div class="col-2 p-2">
+                            <label for="">Cantidad Mínima de Existencias:</label>
+                        </div>
+                        <div class="col-2 p-2">
+                            <div class="border rounded p-2">{{articuloSel.existenciasMinimas}}</div>
+                        </div>
+                        <div class="col-1 p-2">
+                            <label for="">Activo:</label>
+                        </div>
+                        <div class="col p-2">
+                            <i class="fa" [ngClass]="{
+                                        'fa-check-square': articuloSel.activo == true,
+                                        'fa-window-close': articuloSel.activo == false
+                                    }">
+                        </i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title">Listado de Artículos</h1>
+                <app-listado-articulos [pageSize]="15" (selectArticulo)="seleccionarArticulo($event)" [verFiltro]="true"></app-listado-articulos>
+            </div>
+        </div>
+    </div>
+</div>

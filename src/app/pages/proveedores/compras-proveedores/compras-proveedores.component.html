@@ -1,0 +1,183 @@
+<form class="form-material" id="form" autocomplete="off">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Información del Proveedor</h2>
+            <div class="rcorners5px">
+                <div class="row">
+                    <div class="col-1 py-2">
+                        <label for="">Nit:</label>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" class="form-control" name="bit" [(ngModel)]="proveedorSel.nit" (keyup.enter)="buscarProveedor($event.target.value)" maxlength="15" size="15">
+                    </div>
+                    <div class="col-1 py-2">
+                        <label for="">Nombre:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" class="form-control" name="nombre" [(ngModel)]="proveedorSel.nombre" (keyup.enter)="buscarProveedor($event.target.value)">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-1">
+                        <label for="">Teléfono(s):</label>
+                    </div>
+                    <div class="col-4">
+                        <label for="form-control">{{proveedorSel.telefono}}</label>
+                    </div>
+                    <div class="col-1">
+                        <label for="">Dirección:</label>
+                    </div>
+                    <div class="col">
+                        <label for="form-control">{{proveedorSel.direccion}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Datos de la Factura</h2>
+            <div class="rcorners5px">
+                <div class="row p-2">
+                    <div class="col-1 py-2">
+                        <label for="">Número:</label>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" class="form-control" name="numerofactura" [(ngModel)]="factura.numero" maxlength="15" size="15">
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Fecha de Expedición:</label>
+                    </div>
+                    <div class="col-2">
+                        <input type="date" class="form-control" name="fechaexpedicion" [(ngModel)]="factura.fechaexpedicion" size="15" maxlength="15">
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-1 py-2">
+                        <label for="">Valor Iva:</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input type="text" name="valoriva" [(ngModel)]="factura.valoriva" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                        </div>
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Valor Total:</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input type="text" name="valortotal" [(ngModel)]="factura.valortotal" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                        </div>
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Fecha de Vencimiento:</label>
+                    </div>
+                    <div class="col-2">
+                        <input type="date" class="form-control" name="fechavencimiento" [(ngModel)]="factura.fechavencimiento" size="15" maxlength="15">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Detalles de los Artículos de la Factura</h2>
+            <div class="rcorners5px">
+                <div class="row p-2">
+                    <div class="col-1 py-2">
+                        <label for="">Id Artículo:</label>
+                    </div>
+                    <div class="col-1">
+                        <input type="text" name="idarticulo" [(ngModel)]="detalleSel.idarticulo" appDigitOnly inputmode="numeric" pattern="^\d{1,9}$" class="form-control text-right" (keyup.enter)="buscarArticuloById($event.target.value)" />
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Nombre:</label>
+                    </div>
+                    <div class="col">
+                        <input type="text" [value]="articuloSel?.nombreComercial+' x '+articuloSel?.presentacion?.nombre" name="nombregenerico" class="form-control" />
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-1 py-2">
+                        <label for="">Cantidad:</label>
+                    </div>
+                    <div class="col-1">
+                        <input type="text" name="cantidad" [(ngModel)]="detalleSel.cantidad" appDigitOnly placeholder="0" inputmode="numeric" pattern="^\d{1,9}$" class="form-control text-right" />
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Valor de Compra:</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input type="text" name="valoriva" [(ngModel)]="detalleSel.valorcompra" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                        </div>
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Valor de Venta:</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input type="text" name="valoriva" [(ngModel)]="detalleSel.valorventa" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                        </div>
+                    </div>
+                    <div class="col py-2">
+                        <div class="checkbox">
+                            <label class="px-2">¿Es bonificación?</label>
+                            <input name="bonificacion" [(ngModel)]="detalleSel.bonificacion" class="form-check-input" type="checkbox" id="checkboxNoLabel" aria-label="..." />
+                            <label for="checkboxNoLabel">&nbsp;</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col">
+                        <div class="row p-2">
+                            <h3>Listado de Artículos</h3>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-10">
+                                <mat-table #table [dataSource]="dataSource" class="container w90p table-striped">
+                                    <ng-container matColumnDef="{{column.id}}" *ngFor="let column of colsArticulos">
+                                        <mat-header-cell *matHeaderCellDef class="text-light bg-dark">
+                                            {{column.value}}
+                                        </mat-header-cell>
+                                        <ng-container *ngIf="column.id !== 'activo'; else activo">
+                                            <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id]}}</mat-cell>
+                                        </ng-container>
+                                        <ng-template #activo>
+                                            <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id] ? 'Si' : 'No'}}</mat-cell>
+                                        </ng-template>
+                                    </ng-container>
+                                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                    <mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{'highlight': selectRowIndex == row.id, gray: even}" (click)="seleccion(row)"></mat-row>
+                                </mat-table>
+                            </div>
+                            <div class="col btn-group-vertical">
+                                <button type="button" class="btn btn-primary"><li class="fa fa-plus"></li> Agregar</button>
+                                <button type="button" class="btn btn-success"><li class="fa fa-minus"></li> Retirar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col-1">
+                        <label for="">Anotaciones:</label>
+                    </div>
+                    <div class="col-10">
+                        <textarea id="textarea" rows="3" cols="120"></textarea>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <div class="col text-right">
+                        <button type="reset" class="btn btn-danger">Limpiar</button>
+                        <span class="px-2"></span>
+                        <button type="submit" class="btn btn-info">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

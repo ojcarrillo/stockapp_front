@@ -1,0 +1,29 @@
+<div>
+    <div class="row p-2">
+        <div class="col">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Filtrar por ..." size="40" maxlength="40" [(ngModel)]="filtroProveedor" (keyup.enter)="onChangeProveedores($event.target.value)" />
+                <button class="input-group-addon btn btn-danger" title="Limpiar filtro" alt="Limpiar filtro" (click)="limpiarFiltroProveedores()">
+                        <li class="fa fa-close"></li>
+                    </button>
+            </div>
+        </div>
+    </div>
+    <mat-table #table [dataSource]="dsProveedores" class="container w90p table-striped" *ngIf="dsProveedores.data.length > 0">
+        <ng-container matColumnDef="{{column.id}}" *ngFor="let column of colnamProveedores">
+            <mat-header-cell *matHeaderCellDef class="text-light bg-dark">
+                {{column.value}}
+            </mat-header-cell>
+            <ng-container *ngIf="column.id !== 'activo'; else activo">
+                <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id]}}</mat-cell>
+            </ng-container>
+            <ng-template #activo>
+                <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id] ? 'Si' : 'No'}}</mat-cell>
+            </ng-template>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="colsProveedores"></mat-header-row>
+        <mat-row *matRowDef="let row; let even = even; columns: colsProveedores;" [ngClass]="{'highlight': sriProvedores == row.id, gray: even}" (click)="srProveedores(row)"></mat-row>
+    </mat-table>
+
+    <mat-paginator appPagination [pageSizeOptions]="[5, 10, 20]" [pageSize]="pageSize" [length]="totalElements" (page)="npProveedores($event)" showFirstLastButtons></mat-paginator>
+</div>
