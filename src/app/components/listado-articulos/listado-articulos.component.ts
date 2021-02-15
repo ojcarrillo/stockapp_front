@@ -154,9 +154,14 @@ export class ListadoArticulosComponent implements OnInit {
     } else {
       this.limpiarFiltro();
     }
+    return false;
   }
 
   actualizar() {
     this.listarArticulos(this.request);
+  }
+
+  setRowIndex(i: number) {
+    this.selectRowIndex = i;
   }
 }

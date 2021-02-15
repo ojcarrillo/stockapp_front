@@ -1,4 +1,5 @@
-<form class="form-material" id="form" autocomplete="off">
+<!-- <form class="form-material" id="form" autocomplete="off"> -->
+<div class="form-material">
     <div class="card">
         <div class="card-body">
             <h2 class="card-title">Información del Proveedor</h2>
@@ -96,7 +97,18 @@
                         <label for="">Nombre:</label>
                     </div>
                     <div class="col">
-                        <input type="text" [value]="articuloSel?.nombreComercial+' x '+articuloSel?.presentacion?.nombre" name="nombregenerico" class="form-control" />
+                        <mat-form-field class="col-8">
+                            <input matInput aria-label="State" [matAutocomplete]="auto" [formControl]="buscadorArticulosCtrl" size="40" maxlength="40">
+                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="asignarArticuloSel($event.option.value)">
+                                <mat-option *ngIf="isLoading" class="is-loading">Consultando..</mat-option>
+                                <ng-container *ngIf="!isLoading">
+                                    <mat-option *ngFor="let articulo of articulosFiltrados" [value]="articulo">
+                                        <span>{{articulo.nombreComercial}} x {{articulo.presentacion?.nombre}}</span>
+                                    </mat-option>
+                                </ng-container>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <button class="btn" title="Buscar Artículos" (click)="openModal('buscarArticulosMd')"><li class="fa fa-search"></li></button>
                     </div>
                 </div>
                 <div class="row p-2">
@@ -144,7 +156,7 @@
                                         <mat-header-cell *matHeaderCellDef class="text-light bg-dark">
                                             {{column.value}}
                                         </mat-header-cell>
-                                        <ng-container *ngIf="column.id !== 'activo'; else activo">
+                                        <ng-container *ngIf="column.id !== 'bonificacion'; else activo">
                                             <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id]}}</mat-cell>
                                         </ng-container>
                                         <ng-template #activo>
@@ -152,12 +164,12 @@
                                         </ng-template>
                                     </ng-container>
                                     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                                    <mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{'highlight': selectRowIndex == row.id, gray: even}" (click)="seleccion(row)"></mat-row>
+                                    <mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{'highlight': selectRowIndex == row.pos, gray: even}" (click)="seleccion(row)"></mat-row>
                                 </mat-table>
                             </div>
                             <div class="col btn-group-vertical">
-                                <button type="button" class="btn btn-primary"><li class="fa fa-plus"></li> Agregar</button>
-                                <button type="button" class="btn btn-success"><li class="fa fa-minus"></li> Retirar</button>
+                                <button type="button" class="btn btn-primary" (click)="agregar()"><li class="fa fa-plus"></li> Agregar</button>
+                                <button type="button" class="btn btn-success" (click)="retirar()"><li class="fa fa-minus"></li> Retirar</button>
                             </div>
                         </div>
                     </div>
@@ -167,7 +179,7 @@
                         <label for="">Anotaciones:</label>
                     </div>
                     <div class="col-10">
-                        <textarea id="textarea" rows="3" cols="120"></textarea>
+                        <textarea id="textarea" rows="3" style="min-width: 100%"></textarea>
                     </div>
                 </div>
                 <div class="row p-2">
@@ -180,4 +192,9 @@
             </div>
         </div>
     </div>
-</form>
+
+    <jw-modal id="buscarArticulosMd">
+        <app-listado-articulos (selectArticulo)="seleccionarArticulo($event)" [verFiltro]="true"></app-listado-articulos>
+    </jw-modal>
+</div>
+<!-- </form> -->

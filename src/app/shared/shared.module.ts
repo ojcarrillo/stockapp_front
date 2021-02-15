@@ -6,6 +6,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { RouterModule } from '@angular/router';
 import { DigitOnlyDirective } from './digit-only.directive';
+import { ModalModule } from './_modal/modal.module';
 
 @NgModule({
   declarations: [
@@ -20,11 +21,13 @@ import { DigitOnlyDirective } from './digit-only.directive';
     HeaderComponent,
     SidebarComponent,
     NopagefoundComponent,
-    DigitOnlyDirective
+    DigitOnlyDirective,
+    ModalModule
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    ModalModule
   ]
 })
 export class SharedModule { }
