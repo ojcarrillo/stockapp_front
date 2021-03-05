@@ -1,0 +1,12 @@
+#dtFacturas .mat-column-valorIva,
+.mat-column-valorFactura {
+    text-align: right !important;
+    padding-right: 10px;
+    width: 150px;
+}
+
+.scrollTable {
+    max-height: 400px;
+    overflow-y: auto;
+    display: inline-block;
+}

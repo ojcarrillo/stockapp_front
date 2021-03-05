@@ -25,6 +25,9 @@
                         <li *ngFor="let ruta of rutas">
                             <a routerLinkActive="active" routerLink='{{ruta.link}}'>{{ ruta.titulo }}</a>
                         </li>
+                        <li>
+                            <a routerLink="/capturar-imaganes">Capturar Imagenes</a>
+                        </li>
                     </ul>
                 </li>
                 <ng-container *ngFor="let item of menu | keyvalue">

@@ -1,0 +1,216 @@
+<div class="form-material">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Información de la Venta</h2>
+            <div class="rcorners5px">
+                <div class="row">
+                    <div class="col-1 py-2">
+                        <label for="">Comprador:</label>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" class="form-control" name="comprador" [(ngModel)]="ventaSel.comprador">
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Número de documento:</label>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" name="documentoComprador" [(ngModel)]="ventaSel.documentoComprador" class="form-control text-right" maxlength="15" size="15">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2 py-2">
+                        <label for="">Valor Base:</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input disabled type="text" name="baseFactura" [(ngModel)]="ventaSel.baseFactura" disabled class="form-control text-right" maxlength="15" size="15">
+                        </div>
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Valor Exento:</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input disabled type="text" name="exentoFactura" [(ngModel)]="ventaSel.exentoFactura" disabled class="form-control text-right" maxlength="15" size="15">
+                        </div>
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Valor Iva:</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input disabled type="text" name="valorIva" [(ngModel)]="ventaSel.valorIva" disabled class="form-control text-right" maxlength="15" size="15">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 py-2">
+
+                    </div>
+                    <div class="col-2 py-2">
+                        <label for="">Valor Total:</label>
+                    </div>
+                    <div class="col-2">
+                        <div class="input-group">
+                            <span class="input-group-addon">$</span>
+                            <input disabled type="text" name="valorFactura" [(ngModel)]="ventaSel.valorFactura" disabled class="form-control text-right" maxlength="15" size="15">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-material">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Articulos</h2>
+                <div class="rcorners5px">
+                    <div class="row p-2">
+                        <div class="col-1 py-2">
+                            <label for="">Id Artículo:</label>
+                        </div>
+                        <div class="col-1">
+                            <input type="text" #idarticuloTxt name="idarticulo" [(ngModel)]="detalleSel.idarticulo" appDigitOnly inputmode="numeric" pattern="^\d{1,9}$" class="form-control text-right" (keyup.enter)="buscarArticuloById($event.target.value)" autocomplete="off" />
+                        </div>
+                        <div class="col-2 py-2">
+                            <label for="">Nombre:</label>
+                        </div>
+                        <div class="col">
+                            <mat-form-field class="col-8">
+                                <input matInput aria-label="State" [matAutocomplete]="auto" [formControl]="buscadorArticulosCtrl" size="40" maxlength="40">
+                                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="asignarArticuloSel($event.option.value)">
+                                    <mat-option *ngIf="isLoading" class="is-loading">Consultando..</mat-option>
+                                    <ng-container *ngIf="!isLoading">
+                                        <mat-option *ngFor="let articulo of articulosFiltrados" [value]="articulo">
+                                            <span>{{articulo.nombreComercial}} x {{articulo.presentacion?.nombre}}</span>
+                                        </mat-option>
+                                    </ng-container>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                            <button class="btn" title="Buscar Artículos" (click)="openModal('ventas-factura:buscarArticulosMd')"><li class="fa fa-search"></li></button>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-2">
+                            <label for="">Existencias:</label>
+                        </div>
+                        <div class="col-1">
+                            <label for="">{{ articuloSel?.existencias }}</label>
+                        </div>
+                        <div class="col-2">
+                            <label for="">Unidad de Venta:</label>
+                        </div>
+                        <div class="col-2">
+                            <label for="">{{ articuloSel?.unidadventa?.nombre }}</label>
+                        </div>
+                        <div class="col-2">
+                            <label for="">Valor de Venta:</label>
+                        </div>
+                        <div class="col-1">
+                            <label for="">{{ articuloSel?.valorVenta | currency }}</label>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-2">
+                            <label for="">Presentación:</label>
+                        </div>
+                        <div class="col-2">
+                            <label for="">{{ articuloSel?.presentacion?.nombre }}</label>
+                        </div>
+                        <div class="col-1">
+                            <label for="">Iva:</label>
+                        </div>
+                        <div class="col-1">
+                            <label for="">{{ articuloSel?.iva.porcentaje}} %</label>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-2 py-2">
+                            <label for="">Cantidad Vendida:</label>
+                        </div>
+                        <div class="col-1">
+                            <input type="text" [formControl]="cantidadCtrl" name="cantidad" [(ngModel)]="detalleSel.cantidad" appDigitOnly placeholder="0" inputmode="numeric" pattern="^\d{1,9}$" class="form-control text-right" autocomplete="off" />
+                        </div>
+                        <div class="col-2 py-2">
+                            <label for="">Valor:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input disabled type="text" name="valorArticulo" disabled [(ngModel)]="detalleSel.valorArticulo" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                            </div>
+                        </div>
+                        <div class="col-2 py-2">
+                            <label for="">Valor Iva:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input disabled type="text" name="valorIva" disabled [(ngModel)]="detalleSel.valorIva" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col">
+                            <div class="row p-2">
+                                <h3>Listado de Artículos</h3>
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                    <mat-table #table [dataSource]="dataSource">
+                                        <ng-container matColumnDef="{{column.id}}" *ngFor="let column of colsArticulos">
+                                            <mat-header-cell *matHeaderCellDef class="text-light bg-dark">
+                                                {{column.value}}
+                                            </mat-header-cell>
+                                            <ng-container *ngIf="column.id !== 'bonificacion'; else activo">
+                                                <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id]}}</mat-cell>
+                                            </ng-container>
+                                            <ng-template #activo>
+                                                <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id] ? 'Si' : 'No'}}</mat-cell>
+                                            </ng-template>
+                                        </ng-container>
+                                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                                        <mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{'highlight': selectRowIndex == row.pos, 'gray':even}" (click)="seleccion(row)"></mat-row>
+                                    </mat-table>
+                                </div>
+                                <div class="col btn-group-vertical">
+                                    <button type="button" class="btn" (click)="agregar()"><li class="fa fa-plus"></li> Agregar</button>
+                                    <button type="button" class="btn" (click)="retirar()"><li class="fa fa-minus"></li> Retirar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col text-right">
+                            <button type="button" (click)="reset()" class="btn btn-danger">Limpiar</button>
+                            <span class="px-2"></span>
+                            <button type="button" (click)="guardar()" class="btn btn-info" [disabled]="pagoSel != undefined">Guardar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <jw-modal id="ventas-factura:buscarArticulosMd">
+        <div class="row">
+            <app-listado-articulos (selectArticulo)="seleccionarArticulo($event)" [verFiltro]="true"></app-listado-articulos>
+        </div>
+    </jw-modal>
+    <jw-modal id="ventas-factura:pagarMd">
+        <div class="row" style="width: 450px;">
+            <div class="col-4 py-2">
+                <label for="">Valor de pagado:</label>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="text" name="pago" [(ngModel)]="pago" (keyup.enter)="pagar($event.target.value)" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15" autocomplete="off">
+                </div>
+                <div>{{ errorPago }} </div>
+            </div>
+        </div>
+    </jw-modal>
+</div>

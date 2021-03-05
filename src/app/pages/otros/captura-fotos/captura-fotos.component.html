@@ -1,0 +1,27 @@
+<div class="form-material">
+    <div class="card">
+        <div class="card-body">
+            <h2 class="card-title">Capturar Imagen</h2>
+            <div class="rcorners5px">
+                <div class="row">
+                    <div class="col-6">
+                        <div style="width: 450px;">
+                            <app-camara (getPicture)="handleImage($event)"></app-camara>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div style="text-align:center">
+                            <div class="webcam-image" *ngIf="webcamImage">
+                                <img class="imagen" [src]="webcamImage.imageAsDataUrl" />
+                            </div>
+                            <div class="btn-group p-1">
+                                <button class="btn btn-success" (click)="guardarFoto()" *ngIf="webcamImage">Guardar Foto</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>{{ file }}</div>
+
+        </div>
+    </div>

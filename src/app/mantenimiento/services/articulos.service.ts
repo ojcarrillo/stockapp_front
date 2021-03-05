@@ -25,14 +25,13 @@ export class ArticulosService {
 
   guardarArticulo(obj: Articulo) {
     const url = URL_SERVICIOS + '/guardarArticulo';
-    // url += '?token=' + this._usuarioService.token;
+
     return this.http.post(url, obj)
       .pipe(
         map((resp: any) => {
           return resp;
         })
       );
-
   }
 
   actualizarArticulo(obj: Articulo, id?: number) {

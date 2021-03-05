@@ -9,7 +9,7 @@
             </div>
         </div>
     </div>
-    <mat-table #table [dataSource]="dsProveedores" class="container w90p table-striped" *ngIf="dsProveedores.data.length > 0">
+    <mat-table #table [dataSource]="dsProveedores" class="container w90p" *ngIf="dsProveedores.data.length > 0">
         <ng-container matColumnDef="{{column.id}}" *ngFor="let column of colnamProveedores">
             <mat-header-cell *matHeaderCellDef class="text-light bg-dark">
                 {{column.value}}

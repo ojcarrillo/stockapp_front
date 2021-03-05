@@ -64,9 +64,22 @@ export class AppSettings {
         }
     };
 
+    public static SWAL_WARNING = {
+        text: '',
+        icon: 'warning',
+        showClass: {
+            popup: ''
+        },
+        hideClass: {
+            popup: ''
+        }
+    };
+
 }
 
 export const URL_SERVICIOS = 'http://localhost:9001';
+
+export const URL_UPLOAD_FILE = URL_SERVICIOS + '/uploadFileJSON';
 
 export function formatMoney(value: any) {
     const temp = `${value}`.replace(/\,/g, '');

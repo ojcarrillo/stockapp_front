@@ -1,1 +1,136 @@
-<h1> entonces !!! </h1>
+<h1>Calculadora 4to Stat Artefactos 5
+    <li class="fa fa-star-o"></li>
+</h1>
+<div class="row">
+    <div class="col-6">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Stats artefacto</h2>
+                        <div class="row p-2">
+                            <div class="col-2 py-2">
+                                <b>Stat Principal</b>
+                            </div>
+                            <div class="col">
+                                <mat-select class="form-control" name="principal" [(ngModel)]="statPrincipal">
+                                    <mat-label class="mat-option">Seleccione una opción...</mat-label>
+                                    <mat-option *ngFor="let item of tiposStats" [value]="item">{{item.nombre}}</mat-option>
+                                </mat-select>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-2 py-2">Stat 1</div>
+                            <div class="col">
+                                <mat-select class="form-control" name="tipo1" [(ngModel)]="statsArtefacto.uno.tipo">
+                                    <mat-label class="mat-option">Seleccione una opción...</mat-label>
+                                    <mat-option *ngFor="let item of filterSubStats(statPrincipal, statsArtefacto.dos.tipo, statsArtefacto.tres.tipo)" [value]="item">{{item.nombre}}</mat-option>
+                                </mat-select>
+                            </div>
+                            <div class="col-3">
+                                <input type="text" name="uno" [(ngModel)]="statsArtefacto.uno.valor" appDigitOnly placeholder="0" inputmode="numeric" decimal="true" pattern="^\d{1,9}(\.\d{1,2})?$" size="8" maxLength="6" class="form-control text-right">
+                            </div>
+                            <div class="col-2 p-2">
+                                <label for="">: {{ statsArtefacto.uno.calc | number : '1.2-2' }}</label>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-2 py-2">Stat 2</div>
+                            <div class="col">
+                                <mat-select class="form-control" name="tipo2" [(ngModel)]="statsArtefacto.dos.tipo">
+                                    <mat-label class="mat-option">Seleccione una opción...</mat-label>
+                                    <mat-option *ngFor="let item of filterSubStats(statPrincipal, statsArtefacto.uno.tipo, statsArtefacto.tres.tipo)" [value]="item">{{item.nombre}}</mat-option>
+                                </mat-select>
+                            </div>
+                            <div class="col-3">
+                                <input type="text" name="dos" [(ngModel)]="statsArtefacto.dos.valor" appDigitOnly placeholder="0" inputmode="numeric" decimal="true" pattern="^\d{1,9}(\.\d{1,2})?$" size="8" maxLength="6" class="form-control text-right">
+                            </div>
+                            <div class="col-2 p-2">
+                                <label for="">: {{ statsArtefacto.dos.calc | number : '1.2-2' }}</label>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-2 py-2">Stat 3</div>
+                            <div class="col">
+                                <mat-select class="form-control" name="tipo3" [(ngModel)]="statsArtefacto.tres.tipo">
+                                    <mat-label class="mat-option">Seleccione una opción...</mat-label>
+                                    <mat-option *ngFor="let item of filterSubStats(statPrincipal, statsArtefacto.uno.tipo, statsArtefacto.dos.tipo)" [value]="item">{{item.nombre}}</mat-option>
+                                </mat-select>
+                            </div>
+                            <div class="col-3">
+                                <input type="text" name="tres" [(ngModel)]="statsArtefacto.tres.valor" appDigitOnly placeholder="0" inputmode="numeric" decimal="true" pattern="^\d{1,9}(\.\d{1,2})?$" size="8" maxLength="6" class="form-control text-right">
+                            </div>
+                            <div class="col-2 p-2">
+                                <label for="">: {{ statsArtefacto.tres.calc | number : '1.2-2'}}</label>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col text-right ">
+                                <button type="button" class="btn btn-danger" (click)="limpiar()">Reiniciar</button>
+                                <button type="button" class="btn btn-info" (click)="calcular()">Calcular</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Stats Calculados</h2>
+                        <!-- <div class="row p-2" *ngFor="let objeto of statsArtefacto | keyvalue: originalOrder; let i = index;">
+                            <div class="col-2">
+                                {{ i + 1 }}
+                            </div>
+                            <div class="col-2">
+                                <label for="">{{ objeto.value.tipo?.nombre}}: {{ objeto.value.valor}}</label>
+                            </div>
+                            <div class="col-2">
+                                <label for="">{{ objeto.value.calc | number : '1.2-2' }}</label>
+                            </div>
+                        </div> -->
+                        <div class="row p-2">
+                            <div class="col-3 p-2">
+                                <label for="">Stat Probable</label>
+                            </div>
+                            <div class="col p-2 rounded">
+                                <b>{{ statsArtefacto.cuatro.tipo?.nombre | uppercase }}</b>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-3 p-2">
+                                <label for="">Stat Rompepatron</label>
+                            </div>
+                            <div class="col p-2 rounded">
+                                <b>{{ statsArtefacto.ruptura.tipo?.nombre | uppercase }}</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">Stats</h2>
+                        <div class="row p-2" *ngFor="let item of tiposStats; let i = index">
+                            <div class="col-1">
+                                <label for="">{{ i + 1 }} </label>
+                            </div>
+                            <div class="col">
+                                <label class="">{{ item.nombre }}</label>
+                            </div>
+                            <div class="col">
+                                <label class="">{{ item.cap }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

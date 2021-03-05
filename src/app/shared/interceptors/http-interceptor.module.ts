@@ -21,13 +21,24 @@ export class AuthInterceptor implements HttpInterceptor {
         // console.log('url:', req.url, req.params);
         const obj = JSON.parse(localStorage.getItem('usuarioStockApp'));
         if (this.isValidRequestForInterceptor(req.url)) {
-            const reqMod = req.clone({
-                setHeaders: {
-                    'Content-Type': 'application/json; charset=utf-8',
-                    Accept: 'application/json',
-                    Authorization: `${obj.token}`
-                },
-            });
+            let reqMod;
+            if (req.headers.get('Content-Type') === 'enviar_imagen') {
+                reqMod = req.clone({
+                    setHeaders: {
+                        'Content-Type': 'multipart/form-data;boundary=file',
+                        Accept: '*/*',
+                        Authorization: `${obj.token}`,
+                    },
+                });
+            } else {
+                reqMod = req.clone({
+                    setHeaders: {
+                        'Content-Type': !req.headers.has('Content-Type') ? 'application/json; charset=utf-8' : req.headers.get('Content-Type'),
+                        Accept: !req.headers.has('Content-Type') ? 'application/json' : '*/*',
+                        Authorization: `${obj.token}`,
+                    },
+                });
+            }
             return next.handle(reqMod)
                 .pipe(
                     catchError((err: HttpErrorResponse) => {
@@ -42,7 +53,7 @@ export class AuthInterceptor implements HttpInterceptor {
                                 }
                             });
                         }
-                        return Observable.throw(err.statusText);
+                        throw err;
                     }));
         }
         return next.handle(req);

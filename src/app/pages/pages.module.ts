@@ -16,6 +16,10 @@ import { ComponentsModule } from '../components/components.module';
 import { VerExistenciasComponent } from './inventario/ver-existencias/ver-existencias.component';
 import { ComprasProveedoresComponent } from './proveedores/compras-proveedores/compras-proveedores.component';
 import { ModalModule } from '../shared/_modal/modal.module';
+import { VentaFacturaComponent } from './ventas/venta-factura/venta-factura.component';
+import { CapturaFotosComponent } from './otros/captura-fotos/captura-fotos.component';
+import { WebcamModule } from 'ngx-webcam';
+import { CamaraComponent } from './otros/camara/camara.component';
 
 @NgModule({
   declarations: [
@@ -23,10 +27,13 @@ import { ModalModule } from '../shared/_modal/modal.module';
     DashboardComponent,
     VerProveedoresComponent,
     VerExistenciasComponent,
-    ComprasProveedoresComponent
+    ComprasProveedoresComponent,
+    VentaFacturaComponent,
+    CapturaFotosComponent,
+    CamaraComponent
   ],
   exports: [
-    PagesComponent
+    PagesComponent,
   ],
   imports: [
     CommonModule,
@@ -41,7 +48,8 @@ import { ModalModule } from '../shared/_modal/modal.module';
     ComponentsModule,
     MatInputModule,
     MatAutocompleteModule,
-    ModalModule
+    ModalModule,
+    WebcamModule
   ]
 })
 export class PagesModule { }

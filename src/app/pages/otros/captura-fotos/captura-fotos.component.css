@@ -1,0 +1,12 @@
+ul.links {
+    padding-bottom: 10px;
+}
+
+li {
+    display: inline;
+    padding: 5px;
+}
+
+.imagen {
+    width: 500px;
+}

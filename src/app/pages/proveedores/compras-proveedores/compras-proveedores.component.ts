@@ -1,33 +1,36 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Proveedor } from '../../../models/proveedor.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Articulo } from 'src/app/models/articulo.model';
-import { Fatura } from '../../../models/factura.model';
+import { Factura } from '../../../models/factura.model';
 import { DetalleFacturProveedor } from '../../../models/detalle-factura-proveedor.model';
 import { ProveedorService } from '../../../mantenimiento/services/proveedor.service';
 import { ArticulosService } from '../../../mantenimiento/services/articulos.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { debounceTime, finalize, switchMap, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { URL_SERVICIOS } from '../../../shared/app-settings.module';
-import { MatDialog } from '@angular/material/dialog';
+
 import { ListadoArticulosComponent } from '../../../components/listado-articulos/listado-articulos.component';
 import { ModalService } from '../../../shared/_modal/modal.service';
+import { FacturaService } from '../../../mantenimiento/services/factura.service';
+
+import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { AppSettings, URL_SERVICIOS } from '../../../shared/app-settings.module';
 
 @Component({
   selector: 'app-compras-proveedores',
   templateUrl: './compras-proveedores.component.html',
-  styles: [
-  ]
+  styleUrls: ['./compras-proveedores.component.css']
 })
 export class ComprasProveedoresComponent implements OnInit {
+
+  ahora;
 
   proveedorSel = new Proveedor('', '', '', '');
   articuloSel: Articulo;
   detalleSel = new DetalleFacturProveedor();
 
-  factura = new Fatura();
-  articulos: DetalleFacturProveedor[];
+  factura = new Factura();
   detalleSelObj: DetalleFacturProveedor;
 
   selectRowIndex = -1;
@@ -35,6 +38,7 @@ export class ComprasProveedoresComponent implements OnInit {
   dataSource = new MatTableDataSource<DetalleFacturProveedor>();
 
   @ViewChild(ListadoArticulosComponent, { static: false }) listadoComponent: ListadoArticulosComponent;
+  @ViewChild('idarticuloTxt') idarticuloTxt: ElementRef;
 
   /* autocomplete - buscador articulos */
   buscadorArticulosCtrl = new FormControl();
@@ -68,17 +72,30 @@ export class ComprasProveedoresComponent implements OnInit {
   }
   ];
 
+  public guardarForm = this.fb.group({
+    nit: ['', [Validators.required]],
+    numerofactura: ['', [Validators.required]],
+    fechaexpedicion: ['', [Validators.required]],
+    valoriva: ['', [Validators.required]],
+    valortotal: ['', [Validators.required]],
+    fechavencimiento: ['', [Validators.required]]
+  });
 
   constructor(
-    private proveedorService: ProveedorService,
-    private articuloService: ArticulosService,
+    private fb: FormBuilder,
     private http: HttpClient,
-    private modalService: ModalService) { }
+    private modalService: ModalService,
+    private articuloService: ArticulosService,
+    private proveedorService: ProveedorService,
+    private facturaService: FacturaService) {
+
+  }
 
   ngOnInit(): void {
     this.displayedColumns = this.colsArticulos.map(x => x.id);
     this.dataSource.data = [];
     this.initBuscadorArticulos();
+    this.ahora = new Date().toISOString().slice(0, 10);
   }
 
   seleccion(obj: DetalleFacturProveedor) {
@@ -87,14 +104,15 @@ export class ComprasProveedoresComponent implements OnInit {
   }
 
   agregar() {
-    console.log('isvalid', this.detalleSel.isValid(), 'agr', this.validarDetalleAgregado().length);
-
     if (this.detalleSel.isValid() && this.validarDetalleAgregado().length === 0) {
       this.detalleSel.pos = this.dataSource.data.length + 1;
+      this.detalleSel.idarticulo = this.articuloSel.id;
+      this.detalleSel.articulo = this.articuloSel;
       this.dataSource.data.push(this.detalleSel);
       this.detalleSel = new DetalleFacturProveedor();
       this.dataSource._updateChangeSubscription();
       this.buscadorArticulosCtrl.setValue('');
+      this.idarticuloTxt.nativeElement.focus();
     }
   }
 
@@ -128,6 +146,7 @@ export class ComprasProveedoresComponent implements OnInit {
       .subscribe((resp: any) => {
         if (resp.page.totalElements === 1) {
           this.proveedorSel = resp._embedded.proveedores[0];
+          this.setFocus('numerofactura');
         }
       });
   }
@@ -169,11 +188,10 @@ export class ComprasProveedoresComponent implements OnInit {
   seleccionarArticulo(obj: Articulo) {
     this.asignarArticuloSel(obj);
     this.closeModal('buscarArticulosMd');
+    this.setFocus('cantidad');
   }
 
   asignarArticuloSel(obj: Articulo) {
-    console.log(obj);
-
     if (obj.id === undefined) {
       return;
     }
@@ -190,5 +208,73 @@ export class ComprasProveedoresComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
+  }
+
+  setFocus(nombre: string) {
+    window.document.getElementsByName(nombre)[0].focus();
+  }
+
+  guardar() {
+    if (this.proveedorSel.id === undefined) {
+      this.setFocus('nit');
+      return;
+    }
+    if (this.factura.numeroFactura === undefined || this.factura.numeroFactura === '') {
+      this.setFocus('numerofactura');
+      return;
+    }
+    if (this.factura.fechaExpedicion === undefined || this.factura.fechaExpedicion.toString() === '') {
+      this.setFocus('fechaexpedicion');
+      return;
+    }
+    if (this.factura.valorIva === undefined || this.factura.valorIva.toString() === '') {
+      this.setFocus('valoriva');
+      return;
+    }
+    if (this.factura.valorFactura === undefined || this.factura.valorFactura.toString() === '') {
+      this.setFocus('valortotal');
+      return;
+    }
+    if (this.factura.fechaVencimiento === undefined || this.factura.fechaVencimiento.toString() === '') {
+      this.setFocus('fechavencimiento');
+      return;
+    }
+    if (this.dataSource.data.length === 0) {
+      this.setFocus('idarticulo');
+      return;
+    }
+    if (this.factura.fechaExpedicion > this.factura.fechaVencimiento) {
+      this.setFocus('fechaexpedicion');
+      return;
+    }
+    if (this.factura.fechaVencimiento < this.factura.fechaExpedicion) {
+      this.setFocus('fechavencimiento');
+      return;
+    }
+    this.factura.articulos = this.dataSource.data;
+    this.factura.proveedor = this.proveedorSel;
+    this.facturaService.guardarFactura(this.factura)
+      .subscribe((resp: any) => {
+        Swal.fire(AppSettings.SWAL_GUARDADO as SweetAlertOptions);
+        this.listadoComponent.actualizar();
+      },
+        (error: any) => {
+          const errorMsg = AppSettings.SWAL_WARNING as SweetAlertOptions;
+          errorMsg.text = error.error.errormsg;
+          this.reset();
+          Swal.fire(errorMsg);
+        });
+  }
+
+  reset() {
+    this.proveedorSel = new Proveedor('', '', '', '');
+    this.detalleSel = new DetalleFacturProveedor();
+    this.factura = new Factura();
+    this.selectRowIndex = -1;
+    this.dataSource.data = [];
+    this.dataSource._updateChangeSubscription();
+    this.detalleSelObj = undefined;
+    this.articuloSel = undefined;
+
   }
 }

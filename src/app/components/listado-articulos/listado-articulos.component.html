@@ -1,4 +1,4 @@
-<div>
+<div class="container" [style]="getWidth()">
     <div class="row p-2" *ngIf="verFiltro">
         <div class="col">
             <div class="input-group">
@@ -9,12 +9,12 @@
             </div>
         </div>
     </div>
-    <mat-table #table [dataSource]="dataSource" class="container w90p table-striped" *ngIf="dataSource.data.length > 0">
+    <mat-table #table [dataSource]="dataSource" *ngIf="dataSource.data.length > 0">
         <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
             <mat-header-cell *matHeaderCellDef class="text-light bg-dark"> {{column.value}}</mat-header-cell>
             <ng-container *ngIf="column.id !== 'activo'; else activo">
                 <mat-cell *matCellDef="let element" class="table-bordered">
-                    {{ column.isNumber ? (element[column.id] | currency) : ( column.isObject ? element[column.id].nombre : element[column.id]) }}
+                    {{ column.isCurrency ? (element[column.id] | currency) : ( column.isObject ? element[column.id].nombre : element[column.id]) }}
                 </mat-cell>
             </ng-container>
             <ng-template #activo>

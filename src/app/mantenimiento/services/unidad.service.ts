@@ -22,7 +22,7 @@ export class UnidadService {
 
   guardarUnidad(unidad: Unidad) {
     const url = URL_SERVICIOS + this.PATH;
-    // url += '?token=' + this._usuarioService.token;
+
     return this.http.post(url, unidad)
       .pipe(
         map((resp: any) => {

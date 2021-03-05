@@ -19,6 +19,7 @@ export class ListadoArticulosComponent implements OnInit {
   @Input() pageSize = 10;
   @Input() verBtnEditar = false;
   @Input() verFiltro = false;
+  @Input() width;
   @Output() selectArticulo: EventEmitter<Articulo> = new EventEmitter();
 
 
@@ -49,13 +50,17 @@ export class ListadoArticulosComponent implements OnInit {
     value: 'Presentación',
     isObject: true
   }, {
+    id: 'existencias',
+    value: 'Existencias',
+    isNumber: true
+  }, {
     id: 'unidadcompra',
     value: 'Unidad de Compra',
     isObject: true
   }, {
     id: 'valorCompra',
     value: 'Valor de Compra ($)',
-    isNumber: true
+    isCurrency: true
   }, {
     id: 'unidadventa',
     value: 'Unidad de Venta',
@@ -63,7 +68,7 @@ export class ListadoArticulosComponent implements OnInit {
   }, {
     id: 'valorVenta',
     value: 'Valor de Venta ($)',
-    isNumber: true
+    isCurrency: true
   }, {
     id: 'tipoarticulo',
     value: 'Tipo de Artículo',
@@ -163,5 +168,9 @@ export class ListadoArticulosComponent implements OnInit {
 
   setRowIndex(i: number) {
     this.selectRowIndex = i;
+  }
+
+  getWidth() {
+    return `max-width: ${this.width}`;
   }
 }

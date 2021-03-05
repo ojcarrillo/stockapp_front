@@ -24,7 +24,7 @@ export class ProveedorService {
 
   guardarProveedor(obj: Proveedor) {
     const url = URL_SERVICIOS + this.PATH;
-    // url += '?token=' + this._usuarioService.token;
+
     return this.http.post(url, obj)
       .pipe(
         map((resp: any) => {

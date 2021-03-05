@@ -9,52 +9,91 @@
             </div>
         </div>
         <div class="col-6">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="card-title">Información del Proveedor</h2>
-                    <div class="rcorners5px">
-                        <div class="row">
-                            <div class="col-2">
-                                <label for="">Nombre:</label>
+            <div class="row">
+                <div class="col-12 card">
+                    <div class="card-body">
+                        <h2 class="card-title">Información del Proveedor</h2>
+                        <div class="rcorners5px">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="">Nombre:</label>
+                                </div>
+                                <div class="col">
+                                    <label for="form-control">{{proveedorSel.nombre}}</label>
+                                </div>
                             </div>
-                            <div class="col">
-                                <label for="form-control">{{proveedorSel.nombre}}</label>
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="">Nit:</label>
+                                </div>
+                                <div class="col">
+                                    <label for="form-control">{{proveedorSel.nit}}</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2">
-                                <label for="">Nit:</label>
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="">Teléfono(s):</label>
+                                </div>
+                                <div class="col">
+                                    <label for="form-control">{{proveedorSel.telefono}}</label>
+                                </div>
                             </div>
-                            <div class="col">
-                                <label for="form-control">{{proveedorSel.nit}}</label>
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="">Dirección:</label>
+                                </div>
+                                <div class="col">
+                                    <label for="form-control">{{proveedorSel.direccion}}</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2">
-                                <label for="">Teléfono(s):</label>
-                            </div>
-                            <div class="col">
-                                <label for="form-control">{{proveedorSel.telefono}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2">
-                                <label for="">Dirección:</label>
-                            </div>
-                            <div class="col">
-                                <label for="form-control">{{proveedorSel.direccion}}</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-2">
-                                <label for="">Activo:</label>
-                            </div>
-                            <div class="col">
-                                <i class="fa" [ngClass]="{
+                            <div class="row">
+                                <div class="col-2">
+                                    <label for="">Activo:</label>
+                                </div>
+                                <div class="col">
+                                    <i class="fa" [ngClass]="{
                                         'fa-check-square': proveedorSel.activo == true,
                                         'fa-window-close': proveedorSel.activo == false
                                     }">
                                 </i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 card">
+                    <div class="card-body">
+                        <h2 class="card-title">Información de las Facturas</h2>
+                        <div class="rcorners5px">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="">Cantidad Pagadas:</label>
+                                </div>
+                                <div class="col">
+                                    {{ totalesPagosFacturasProveedor.cantidadPagadas }}
+                                </div>
+                                <div class="col-4">
+                                    <label for="">Valor Total Pagadas:</label>
+                                </div>
+                                <div class="col text-right">
+                                    {{ totalesPagosFacturasProveedor.totalPagadas | currency}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="">Cantidad Sin Pagar:</label>
+                                </div>
+                                <div class="col">
+                                    {{ totalesPagosFacturasProveedor.cantidadPendientes }}
+                                </div>
+                                <div class="col-4">
+                                    <label for="">Valor Total Abonado:</label>
+                                </div>
+                                <div class="col text-right">
+                                    {{ totalesPagosFacturasProveedor.totalPendientes | currency}}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -66,9 +105,44 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="card-title">Facturas del Proveedor</h2>
+                    <h2 class="card-title">Facturas del Proveedor <span *ngIf="proveedorSel.id">{{ proveedorSel.nit }}  {{ proveedorSel.nombre }}</span></h2>
 
-                    <app-listado-proveedores [pageSize]="10"></app-listado-proveedores>
+                    <mat-table #dtFacturas id="dtFacturas" [dataSource]="dataSource">
+                        <ng-container matColumnDef="rowNumber">
+                            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"></mat-header-cell>
+                            <mat-cell *matCellDef="let i = index">
+                                {{this.paginator.pageIndex == 0 ? i + 1 : 1 + i + this.paginator.pageIndex * this.paginator.pageSize}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
+                            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"> {{column.value}}</mat-header-cell>
+                            <ng-container *ngIf="column.id !== 'activo'; else activo">
+                                <mat-cell *matCellDef="let element" class="table-bordered">
+                                    {{ column.isCurrency ? (element[column.id] | currency) : ( column.isDate ? (element[column.id] | date: 'dd/MM/yyyy') : ( column.isObject ? element[column.id].nombre : element[column.id])) }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-template #activo>
+                                <mat-cell *matCellDef="let element" class="table-bordered"> {{element[column.id] ? 'Si' : 'No'}}</mat-cell>
+                            </ng-template>
+                        </ng-container>
+                        <ng-container matColumnDef="opciones">
+                            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"></mat-header-cell>
+                            <mat-cell *matCellDef="let element">
+                                <a data-toggle="tooltip" data-original-title="Ver Anotaciones" title="Ver Anotaciones" class="btn cursor" (click)="verAnotaciones(element)">
+                                    <i class="fa fa-file"></i>
+                                </a>
+                                <a data-toggle="tooltip" data-original-title="Ver Pagos" title="Ver Pagos" class="btn cursor" (click)="verPagosAFactura(element)">
+                                    <i class="fa fa-search"></i>
+                                </a>
+
+                            </mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{'highlight': selectRowIndex == row.id, gray: even}" (click)="seleccionarFactura(row)"></mat-row>
+                    </mat-table>
+
+                    <mat-paginator appPagination [pageSizeOptions]="[5, 10, 20]" [pageSize]="pageSize" [length]="totalElements" (page)="nextPage($event)" showFirstLastButtons></mat-paginator>
 
                 </div>
             </div>
@@ -78,10 +152,142 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h2 class="card-title">Estado de la Factura</h2>
-                    <app-listado-articulos [verFiltro]="true" [pageSize]="5"></app-listado-articulos>
+                    <h2 class="card-title">Pago de Factura <span *ngIf="facturaSel">Número {{ facturaSel?.numeroFactura }} </span></h2>
+                    <div class="rcorners5px">
+                        <div class="row p-2">
+                            <div class="col-2 py-2">
+                                <label for="">Fecha de Pago:</label>
+                            </div>
+                            <div class="col-2">
+                                <input type="date" class="form-control" name="fechaPago" [(ngModel)]="pagoFacturaSel.fechaPago" size="15" maxlength="15" [max]="ahora">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-2 py-2">
+                                <label for="">Método de Pago:</label>
+                            </div>
+                            <div class="col-2">
+                                <mat-select class="form-control" name="metodoPago" [(ngModel)]="pagoFacturaSel.metodoPago">
+                                    <mat-option value="e">Efectivo</mat-option>
+                                    <mat-option value="c">Cheque</mat-option>
+                                </mat-select>
+                            </div>
+                            <div class="col-2 py-2" *ngIf="pagoFacturaSel.metodoPago === 'c'">
+                                <label for="">Banco:</label>
+                            </div>
+                            <div class="col-2" *ngIf="pagoFacturaSel.metodoPago === 'c'">
+                                <input type="text" class="form-control" name="banco" [(ngModel)]="pagoFacturaSel.banco" siz="50" maxlength="50">
+                            </div>
+                            <div class="col-2 py-2" *ngIf="pagoFacturaSel.metodoPago === 'c'">
+                                <label for="">Número de Cheque:</label>
+                            </div>
+                            <div class="col-2" *ngIf="pagoFacturaSel.metodoPago === 'c'">
+                                <input type="text" class="form-control" name="cheque" [(ngModel)]="pagoFacturaSel.cheque" siz="20" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col-2 py-2">
+                                <label for="">Valor del Pago:</label>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input type="text" name="valorPago" [(ngModel)]="pagoFacturaSel.valorPago" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                                </div>
+                            </div>
+                            <div class="col-2 py-2">
+                                <label for="">Descuento:</label>
+                            </div>
+                            <div class="col-2">
+                                <div class="input-group">
+                                    <span class="input-group-addon">$</span>
+                                    <input type="text" name="descuento" [(ngModel)]="pagoFacturaSel.descuento" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row p-2">
+                            <div class="col text-right">
+                                <button type="button" (click)="resetPago()" class="btn btn-danger">Limpiar</button>
+                                <span class="px-2"></span>
+                                <button type="button" (click)="guardarPago()" class="btn btn-info" [disabled]="facturaSel === undefined || facturaSel?.id === undefined">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <jw-modal id="verAnotacionesMD">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-title">Factura Número {{ facturaSel?.numeroFactura }}</div>
+                    <div class="card-body">
+                        <div class="row">Anotaciones:</div>
+                        <div class="row">
+                            <p>
+                                {{ facturaSel?.anotaciones }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
+
+    <jw-modal id="verPagosAFacturaMD">
+        <div class="row">
+            <div class="col">
+                <div class="card" style="height: 500px !important;">
+                    <div class="card-title">Factura Número {{ facturaSel?.numeroFactura }}</div>
+                    <div class="card-body">
+                        <div class="row">Pagos/Abonos realizados:</div>
+                        <div class="row">
+                            <div class="scrollTable">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Fecha Pago</th>
+                                            <th>Método de Pago</th>
+                                            <th>Valor Pago</th>
+                                            <th>Descuento</th>
+                                            <th>Banco</th>
+                                            <th>Número de Cheque</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of pagosAFactura; let i = index">
+                                            <td>{{ i + 1 }}</td>
+                                            <td>{{ item?.fechaPago | date: 'dd/MM/yyyy' }}</td>
+                                            <td>{{ item?.metodoPago == 'e' ? 'Efectivo' : 'Cheque' }}</td>
+                                            <td class="text-right">{{ item?.valorPago | currency }}</td>
+                                            <td class="text-right">{{ item?.descuento | currency }}</td>
+                                            <td>{{ item?.banco }}</td>
+                                            <td>{{ item?.cheque }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row pt-4 ">
+                            <div class="col-4">
+                                Valor Factura:
+                            </div>
+                            <div class="col-2 text-right">
+                                {{ facturaSel?.valorFactura | currency }}
+                            </div>
+                            <div class="col-4">
+                                Total Abonos:
+                            </div>
+                            <div class="col-2 text-right">
+                                {{ totalAbonos | currency }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </jw-modal>
 </div>

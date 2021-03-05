@@ -1,5 +1,6 @@
 .mat-column-valorCompra,
-.mat-column-valorVenta {
+.mat-column-valorVenta,
+.mat-column-existencias {
     color: #333;
     text-align: right !important;
     padding-right: 10px;

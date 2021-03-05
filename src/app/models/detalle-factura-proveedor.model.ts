@@ -1,11 +1,14 @@
+import { Articulo } from './articulo.model';
 export class DetalleFacturProveedor {
+
+    public articulo: Articulo;
 
     constructor(
         public idfactura?: number,
         public idarticulo?: number,
         public cantidad?: number,
-        public valorcompra?: number,
-        public valorventa?: number,
+        public valorCompra?: number,
+        public valorVenta?: number,
         public pos?: number,
         public bonificacion: boolean = false,
         public nombre?: string
