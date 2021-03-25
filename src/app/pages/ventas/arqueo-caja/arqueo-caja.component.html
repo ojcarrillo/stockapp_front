@@ -1,0 +1,130 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Arqueo</h2>
+                <div class="rcorners5px">
+                    <div class="row">
+                        <div class="col-10">
+                            <div class="row">
+                                <div class="col-2 py-2">
+                                    <label for="">Iniciando en:</label>
+                                </div>
+                                <div class="col-5">
+                                    <input type="date" class="form-control" name="fechaInicio" [(ngModel)]="fechaInicio" size="15" maxlength="15" [max]="ahora">
+                                </div>
+                                <div class="col-5">
+                                    <input type="time" class="form-control" name="horaInicio" [(ngModel)]="horaInicio" size="15" maxlength="15" [max]="ahora">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2 py-2">
+                                    <label for="">Terminando en:</label>
+                                </div>
+                                <div class="col-5">
+                                    <input type="date" class="form-control" name="fechaFin" [(ngModel)]="fechaFin" size="15" maxlength="15" [min]="fechaInicio" [max]="ahora">
+                                </div>
+                                <div class="col-5">
+                                    <input type="time" class="form-control" name="horaFin" [(ngModel)]="horaFin" size="15" maxlength="15" [min]="horaInicio" [max]="ahora">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col text-right">
+                            <button type="button" (click)="iniciarArqueo()" class="btn btn-info">Iniciar Arqueo</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Totales</h2>
+                <div class="rcorners5px">
+                    <div class="row">
+                        <div class="col-2 py-2">
+                            <label for="">Valor Base:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input disabled type="text" name="baseFactura" [(ngModel)]="totales.totalBase" disabled class="form-control text-right" maxlength="15" size="15">
+                            </div>
+                        </div>
+                        <div class="col-2 py-2">
+                            <label for="">Valor Exento:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input disabled type="text" name="exentoFactura" [(ngModel)]="totales.totalExento" disabled class="form-control text-right" maxlength="15" size="15">
+                            </div>
+                        </div>
+                        <div class="col-2 py-2">
+                            <label for="">Valor Iva:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input disabled type="text" name="valorIva" [(ngModel)]="totales.totalIva" disabled class="form-control text-right" maxlength="15" size="15">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 py-2">
+
+                        </div>
+                        <div class="col-2 py-2">
+                            <label for="">Valor Total:</label>
+                        </div>
+                        <div class="col-2">
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input disabled type="text" name="valorFactura" [(ngModel)]="totales.totalFacturas" disabled class="form-control text-right" maxlength="15" size="15">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Facturas</h2>
+                <div class="rcorners5px">
+                    <mat-table #dtFacturas id="dtFacturas" [dataSource]="dataSource">
+                        <ng-container matColumnDef="rowNumber">
+                            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"></mat-header-cell>
+                            <mat-cell *matCellDef="let i = index">
+                                {{this.paginator.pageIndex == 0 ? i + 1 : 1 + i + this.paginator.pageIndex * this.paginator.pageSize}}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
+                            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"> {{column.value}}</mat-header-cell>
+                            <ng-container *ngIf="column.id !== 'activo'; else activo">
+                                <mat-cell *matCellDef="let element" class="table-bordered">
+                                    {{ column.isCurrency ? (element[column.id] | currency) : ( column.isDate ? (element[column.id] | date: 'dd/MM/yyyy') : ( column.isObject ? element[column.id].nombre : element[column.id])) }}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-template #activo>
+                                <mat-cell *matCellDef="let element" class="table-bordered"> {{element[column.id] ? 'Si' : 'No'}}</mat-cell>
+                            </ng-template>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{'highlight': selectRowIndex == row.id, gray: even}"></mat-row>
+                    </mat-table>
+
+                    <mat-paginator appPagination [pageSizeOptions]="[5, 10, 20]" [pageSize]="pageSize" [length]="totalElements" (page)="nextPage($event)" showFirstLastButtons></mat-paginator>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

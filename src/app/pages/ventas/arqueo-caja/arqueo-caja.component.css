@@ -1,0 +1,28 @@
+#dtFacturas .mat-column-valorIva,
+.mat-column-exentoFactura,
+.mat-column-valorFactura,
+.mat-column-baseFactura {
+    color: #333;
+    text-align: right !important;
+    padding-right: 10px;
+    flex: 0 0 150px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mat-column-id,
+.mat-column-activo,
+.mat-column-rowNumber {
+    color: #333;
+    text-align: center !important;
+    padding-left: 10px;
+    flex: 100px 0 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.scrollTable {
+    max-height: 400px;
+    overflow-y: auto;
+    display: inline-block;
+}

@@ -20,6 +20,9 @@ export class ArticulosService {
     if (params.filtro !== undefined && params.filtro !== '') {
       url += '/search/filtrarArticulos';
     }
+    else if (params.existenciasBajas !== undefined && params.existenciasBajas !== null) {
+      url += '/search/articulos';
+    }
     return this.http.get(url, { params });
   }
 

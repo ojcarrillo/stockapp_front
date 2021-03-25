@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 })
 export class VentaFacturaService {
 
-  PATH = '/facturas';
+  PATH = '/ventafactura';
 
   constructor(public http: HttpClient
   ) { }
@@ -22,5 +22,15 @@ export class VentaFacturaService {
           return resp;
         })
       );
+  }
+
+  listarFacturas(params: any) {
+    const url = URL_SERVICIOS + '/listarVentas';
+    return this.http.get(url, { params });
+  }
+
+  totalizarFacturas(params: any) {
+    const url = URL_SERVICIOS + '/totalizarVentas';
+    return this.http.get(url, { params });
   }
 }

@@ -20,6 +20,7 @@ export class ListadoArticulosComponent implements OnInit {
   @Input() verBtnEditar = false;
   @Input() verFiltro = false;
   @Input() width;
+  @Input() existenciasBajas = null;
   @Output() selectArticulo: EventEmitter<Articulo> = new EventEmitter();
 
 
@@ -28,7 +29,7 @@ export class ListadoArticulosComponent implements OnInit {
   dataSource = new MatTableDataSource<Articulo>();
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
-  request = { page: '0', size: this.pageSize.toString(), filtro: '' };
+  request = { page: '0', size: this.pageSize.toString(), filtro: '', existenciasBajas: this.existenciasBajas };
   totalElements = 0;
   loading = false;
   selectRowIndex = -1;
@@ -94,7 +95,7 @@ export class ListadoArticulosComponent implements OnInit {
 
   initComponente() {
     this.opciones();
-    this.request = { page: '0', size: this.pageSize.toString(), filtro: '' };
+    this.request = { page: '0', size: this.pageSize.toString(), filtro: '', existenciasBajas: this.existenciasBajas };
     this.listarArticulos(this.request);
     this.dataSource.paginator = this.paginator;
   }
@@ -124,6 +125,8 @@ export class ListadoArticulosComponent implements OnInit {
         this.dataSource.data = resp._embedded.articulos;
       }, error => {
         this.loading = false;
+        console.log(error);
+
       });
   }
 
@@ -140,7 +143,7 @@ export class ListadoArticulosComponent implements OnInit {
 
   limpiarFiltro() {
     this.filtro = '';
-    this.request = { page: '0', size: this.pageSize.toString(), filtro: '' };
+    this.request = { page: '0', size: this.pageSize.toString(), filtro: '', existenciasBajas: this.existenciasBajas };
     if (this.paginator !== undefined) {
       this.paginator.pageIndex = 0;
     }
@@ -154,7 +157,9 @@ export class ListadoArticulosComponent implements OnInit {
     if (filtro.length > 0) {
       this.request.filtro = `${filtro}`;
       this.request.page = '0';
-      this.paginator.pageIndex = 0;
+      if (this.paginator !== undefined) {
+        this.paginator.pageIndex = 0;
+      }
       this.listarArticulos(this.request);
     } else {
       this.limpiarFiltro();

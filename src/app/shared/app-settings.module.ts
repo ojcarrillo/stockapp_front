@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 export class AppSettings {
 
@@ -92,4 +93,10 @@ export function transformCurrency(event: any, control: any) {
         this.formatMoney(value.replace(/\,/g, '')),
         { emitEvent: false }
     );
+}
+
+export function formatDate(fecha: any, formato: string) {
+    const datepipe: DatePipe = new DatePipe('en-US');
+    const formattedDate = datepipe.transform(fecha, formato);
+    return formattedDate;
 }

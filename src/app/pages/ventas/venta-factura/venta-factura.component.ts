@@ -25,6 +25,7 @@ export class VentaFacturaComponent implements OnInit {
   ahora;
   pago;
   errorPago;
+  noPagado = true;
 
   @ViewChild(ListadoArticulosComponent, { static: false }) listadoComponent: ListadoArticulosComponent;
   @ViewChild('idarticuloTxt') idarticuloTxt: ElementRef;
@@ -247,6 +248,7 @@ export class VentaFacturaComponent implements OnInit {
     this.pagoSel = new PagoFactura();
     this.pago = undefined;
     this.errorPago = undefined;
+    this.noPagado = true;
   }
 
   guardar() {
@@ -298,6 +300,7 @@ export class VentaFacturaComponent implements OnInit {
       this.pagoSel.valorFacturado = this.ventaSel.valorFactura;
       this.pagoSel.valorCambio = cambio;
       this.errorPago = undefined;
+      this.noPagado = false;
       this.closeModal('ventas-factura:pagarMd');
     } else {
       this.errorPago = 'El valor pagado es inferior al valor de la venta';

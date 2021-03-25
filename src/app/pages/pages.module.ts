@@ -20,6 +20,9 @@ import { VentaFacturaComponent } from './ventas/venta-factura/venta-factura.comp
 import { CapturaFotosComponent } from './otros/captura-fotos/captura-fotos.component';
 import { WebcamModule } from 'ngx-webcam';
 import { CamaraComponent } from './otros/camara/camara.component';
+import { VerExistenciasBajasComponent } from './inventario/ver-existencias-bajas/ver-existencias-bajas.component';
+import { ArqueoCajaComponent } from './ventas/arqueo-caja/arqueo-caja.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,9 @@ import { CamaraComponent } from './otros/camara/camara.component';
     ComprasProveedoresComponent,
     VentaFacturaComponent,
     CapturaFotosComponent,
-    CamaraComponent
+    CamaraComponent,
+    VerExistenciasBajasComponent,
+    ArqueoCajaComponent
   ],
   exports: [
     PagesComponent,
@@ -49,7 +54,8 @@ import { CamaraComponent } from './otros/camara/camara.component';
     MatInputModule,
     MatAutocompleteModule,
     ModalModule,
-    WebcamModule
+    WebcamModule,
+    MatDatepickerModule
   ]
 })
 export class PagesModule { }
