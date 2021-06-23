@@ -134,6 +134,9 @@
                                 <a data-toggle="tooltip" data-original-title="Ver Pagos" title="Ver Pagos" class="btn cursor" (click)="verPagosAFactura(element)">
                                     <i class="fa fa-search"></i>
                                 </a>
+                                <a data-toggle="tooltip" data-original-title="Ver Detalle de la Factura" title="Ver Detalle de la Factura" class="btn cursor" (click)="verDetalleFactura(element)">
+                                    <i class="fa fa-info"></i>
+                                </a>
 
                             </mat-cell>
                         </ng-container>
@@ -289,5 +292,9 @@
                 </div>
             </div>
         </div>
+    </jw-modal>
+
+    <jw-modal id="verDetalleFacturaMD">
+        <app-ver-factura [numeroFactura]="facturaSel?.numeroFactura"></app-ver-factura>
     </jw-modal>
 </div>

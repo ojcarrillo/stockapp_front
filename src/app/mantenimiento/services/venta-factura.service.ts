@@ -33,4 +33,9 @@ export class VentaFacturaService {
     const url = URL_SERVICIOS + '/totalizarVentas';
     return this.http.get(url, { params });
   }
+
+  findByNumeroFactura(numeroFactura: string) {
+    const url = URL_SERVICIOS + this.PATH + `/search/findByNumeroFactura?numeroFactura=${numeroFactura}`;
+    return this.http.get(url);
+  }
 }

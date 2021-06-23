@@ -11,7 +11,7 @@ import { Venta } from '../../../models/venta-factura.model';
 import { DetalleVentaFactura } from '../../../models/detalle-venta-factura.model';
 
 import Swal, { SweetAlertOptions } from 'sweetalert2';
-import { AppSettings, URL_SERVICIOS } from '../../../shared/app-settings.module';
+import { AppSettings, URL_SERVICIOS, setFocus } from '../../../shared/app-settings.module';
 import { VentaFacturaService } from '../../../mantenimiento/services/venta-factura.service';
 import { PagoFactura } from '../../../models/pago-factura.model';
 
@@ -162,7 +162,7 @@ export class VentaFacturaComponent implements OnInit {
   seleccionarArticulo(obj: Articulo) {
     this.asignarArticuloSel(obj);
     this.closeModal('ventas-factura:buscarArticulosMd');
-    this.setFocus('cantidad');
+    setFocus('cantidad');
   }
 
   asignarArticuloSel(obj: Articulo) {
@@ -253,11 +253,11 @@ export class VentaFacturaComponent implements OnInit {
 
   guardar() {
     if (this.ventaSel.comprador === undefined || this.ventaSel.comprador === '') {
-      this.setFocus('comprador');
+      setFocus('comprador');
       return;
     }
     if (this.ventaSel.documentoComprador === undefined || this.ventaSel.documentoComprador === '') {
-      this.setFocus('documentoComprador');
+      setFocus('documentoComprador');
       return;
     }
     if (this.dataSource.data.length === 0) {
@@ -283,7 +283,7 @@ export class VentaFacturaComponent implements OnInit {
   abrirModalPago() {
     this.openModal('ventas-factura:pagarMd');
     setTimeout(() => {
-      this.setFocus('pago');
+      setFocus('pago');
     }, 600);
     return false;
   }
@@ -314,10 +314,6 @@ export class VentaFacturaComponent implements OnInit {
 
   closeModal(id: string) {
     this.modalService.close(id);
-  }
-
-  setFocus(nombre: string) {
-    window.document.getElementsByName(nombre)[0].focus();
   }
 
 }

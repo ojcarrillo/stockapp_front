@@ -10,7 +10,8 @@ import { ModalService } from '../../../shared/_modal/modal.service';
 import { PagoFacturaProveedor } from '../../../models/pago-factura-proveedor.model';
 import { PagoFacturaProveedorService } from '../../../mantenimiento/services/pago-factura-proveedor.service';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
-import { AppSettings } from '../../../shared/app-settings.module';
+import { AppSettings, setFocus } from '../../../shared/app-settings.module';
+import { VerFacturaComponent } from '../ver-factura/ver-factura.component';
 
 @Component({
   selector: 'app-ver-proveedores',
@@ -31,16 +32,18 @@ export class VerProveedoresComponent implements OnInit {
   pagoFacturaSel: PagoFacturaProveedor;
   pagosAFactura: PagoFacturaProveedor[];
 
+  @ViewChild(VerFacturaComponent, { static: false }) verFacturaComponent: VerFacturaComponent;
+
   /* paginacion proveedores */
   displayedColumns: string[];
   dataSource = new MatTableDataSource<Factura>();
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
 
-  request = { page: '0', size: '5', filtro: '' };
+  pageSize = '5';
+  request = { page: '0', size: this.pageSize, filtro: '' };
   totalElements = 0;
   loading = false;
   pageIndex = 0;
-  pageSize = 5;
   selectRowIndex = -1;
 
   /* nombres de columnas y sus etiquetas */
@@ -69,6 +72,10 @@ export class VerProveedoresComponent implements OnInit {
       id: 'fechaVencimiento',
       value: 'Fecha de Vencimiento',
       isDate: true
+    }, {
+      id: 'estado',
+      value: 'Pago',
+      isObject: false
     }
   ];
 
@@ -88,20 +95,15 @@ export class VerProveedoresComponent implements OnInit {
   }
 
   initListadoFacturas() {
-    this.request = { page: '0', size: this.pageSize.toString(), filtro: '' };
+    this.request = { page: '0', size: this.pageSize, filtro: '' };
     this.displayedColumns = ['rowNumber'].concat(this.columnNames.map(x => x.id)).concat('opciones');
     this.dataSource.paginator = this.paginator;
   }
 
   seleccionarProveedor(obj: Proveedor) {
     this.proveedorSel = obj;
-    const requestFac = { page: '0', size: '10', idproveedor: `${obj.id}` };
-    this.facturaService.listarFacturasByProveedor(requestFac)
-      .subscribe((resp: any) => {
-        this.totalElements = resp.page.totalElements;
-        this.dataSource.data = resp._embedded.facturas;
-        this.dataSource._updateChangeSubscription();
-      });
+    const requestFac = { page: '0', size: this.pageSize, idproveedor: `${obj.id}` };
+    this.listarFacturasByProveedor(requestFac);
     this.pagoFacturaProveedorService.getTotalPagoFacturaProveedor(obj.id)
       .subscribe((resp: any) => {
         if (resp.length > 0) {
@@ -120,7 +122,17 @@ export class VerProveedoresComponent implements OnInit {
       });
   }
 
+  private listarFacturasByProveedor(requestFac: { page: string; size: string; idproveedor: string; }) {
+    this.facturaService.listarFacturasByProveedor(requestFac)
+      .subscribe((resp: any) => {
+        this.totalElements = resp.page.totalElements;
+        this.dataSource.data = resp._embedded.facturas;
+        this.dataSource._updateChangeSubscription();
 
+        console.log(resp._embedded.facturas);
+
+      });
+  }
 
   seleccionarFactura(obj: Factura) {
     this.selectRowIndex = obj.id;
@@ -143,8 +155,8 @@ export class VerProveedoresComponent implements OnInit {
   }
 
   nextPage(event: PageEvent) {
-    this.request.page = event.pageIndex.toString();
-    this.request.size = event.pageSize.toString();
+    const requestFac = { page: event.pageIndex.toString(), size: event.pageSize.toString(), idproveedor: `${this.proveedorSel.id}` };
+    this.listarFacturasByProveedor(requestFac);
   }
 
   resetPago() {
@@ -161,21 +173,21 @@ export class VerProveedoresComponent implements OnInit {
       return;
     }
     if (this.pagoFacturaSel.fechaPago === undefined || this.pagoFacturaSel.fechaPago.toString() === '') {
-      this.setFocus('fechaPago');
+      setFocus('fechaPago');
       return;
     }
     if (this.pagoFacturaSel.valorPago === undefined || this.pagoFacturaSel.valorPago.toString() === ''
       || this.pagoFacturaSel.valorPago === 0) {
-      this.setFocus('valorPago');
+      setFocus('valorPago');
       return;
     }
     if (this.pagoFacturaSel.metodoPago === 'c') {
       if (this.pagoFacturaSel.banco === undefined || this.pagoFacturaSel.banco === '') {
-        this.setFocus('banco');
+        setFocus('banco');
         return;
       }
       if (this.pagoFacturaSel.cheque === undefined || this.pagoFacturaSel.cheque === '') {
-        this.setFocus('cheque');
+        setFocus('cheque');
         return;
       }
     }
@@ -190,11 +202,13 @@ export class VerProveedoresComponent implements OnInit {
           const errorMsg = AppSettings.SWAL_WARNING as SweetAlertOptions;
           errorMsg.text = error.error.errormsg;
           Swal.fire(errorMsg);
-          this.setFocus('valorPago');
+          setFocus('valorPago');
         });
   }
 
-  setFocus(nombre: string) {
-    window.document.getElementsByName(nombre)[0].focus();
+  verDetalleFactura(obj: Factura) {
+    this.facturaSel = obj;
+    this.verFacturaComponent.buscarDetalle(obj.numeroFactura);
+    this.modalService.open('verDetalleFacturaMD');
   }
 }

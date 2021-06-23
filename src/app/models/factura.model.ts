@@ -1,5 +1,6 @@
 import { Proveedor } from './proveedor.model';
 import { DetalleFacturProveedor } from './detalle-factura-proveedor.model';
+import { formatDate } from '../shared/app-settings.module';
 
 export class Factura {
 
@@ -12,6 +13,8 @@ export class Factura {
     public anotaciones: string;
     public articulos: DetalleFacturProveedor[];
     public id: number;
+    public estado: string;
 
     constructor() { }
+
 }

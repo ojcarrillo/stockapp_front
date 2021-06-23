@@ -7,6 +7,8 @@ import { NopagefoundComponent } from './nopagefound/nopagefound.component';
 import { RouterModule } from '@angular/router';
 import { DigitOnlyDirective } from './digit-only.directive';
 import { ModalModule } from './_modal/modal.module';
+import { ListadoArticulosComponent } from '../components/listado-articulos/listado-articulos.component';
+import { ComponentsModule } from '../components/components.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { ModalModule } from './_modal/modal.module';
   imports: [
     CommonModule,
     RouterModule,
-    ModalModule
+    ModalModule,
+    ComponentsModule
   ]
 })
 export class SharedModule { }

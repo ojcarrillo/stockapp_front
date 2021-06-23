@@ -38,4 +38,9 @@ export class FacturaService {
     const url = URL_SERVICIOS + this.PATH + `/search/findById?id=${id}`;
     return this.http.get(url);
   }
+
+  findByNumeroFactura(numeroFactura: string) {
+    const url = URL_SERVICIOS + this.PATH + `/search/findByNumeroFactura?numeroFactura=${numeroFactura}`;
+    return this.http.get(url);
+  }
 }

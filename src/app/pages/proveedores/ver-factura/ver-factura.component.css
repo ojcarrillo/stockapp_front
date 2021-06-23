@@ -1,0 +1,19 @@
+.mat-column-pos,
+.mat-column-rowNumber,
+.mat-column-bonificacion {
+    width: 120px;
+}
+
+.mat-column-articulo,
+.mat-column-generico {
+    width: 240px;
+    word-break: break-word;
+}
+
+.mat-column-valorcompra,
+.mat-column-valorventa,
+.mat-column-cantidad {
+    text-align: right !important;
+    padding-right: 10px;
+    width: 150px;
+}

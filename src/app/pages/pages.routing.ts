@@ -11,6 +11,8 @@ import { VentaFacturaComponent } from './ventas/venta-factura/venta-factura.comp
 import { CapturaFotosComponent } from './otros/captura-fotos/captura-fotos.component';
 import { VerExistenciasBajasComponent } from './inventario/ver-existencias-bajas/ver-existencias-bajas.component';
 import { ArqueoCajaComponent } from './ventas/arqueo-caja/arqueo-caja.component';
+import { VerFacturaComponent } from './proveedores/ver-factura/ver-factura.component';
+import { DevolucionesComponent } from './ventas/devoluciones/devoluciones.component';
 
 const routes: Routes = [
     {
@@ -23,8 +25,10 @@ const routes: Routes = [
             { path: 'ver-existencias-bajas', component: VerExistenciasBajasComponent, data: { parent: 'Inventario', titulo: 'Ver Existencias Bajas' } },
             { path: 'ver-proveedores', component: VerProveedoresComponent, data: { parent: 'Proveedores', titulo: 'Ver Proveedores' } },
             { path: 'compras-proveedores', component: ComprasProveedoresComponent, data: { parent: 'Proveedores', titulo: 'Compras a Proveedores' } },
+            { path: 'ver-factura', component: VerFacturaComponent, data: { parent: 'Proveedores', titulo: 'Ver Factura de Compra' } },
             { path: 'venta-factura', component: VentaFacturaComponent, data: { parent: 'Ventas', titulo: 'Ventas con Factura' } },
             { path: 'arqueo-caja', component: ArqueoCajaComponent, data: { parent: 'Ventas', titulo: 'Arqueo de Caja' } },
+            { path: 'devoluciones', component: DevolucionesComponent, data: { parent: 'Ventas', titulo: 'Devolución de Artículos' } },
             { path: 'capturar-imaganes', component: CapturaFotosComponent, data: { parent: '', titulo: 'Capturar Imágenes Camara' } }
         ]
     },

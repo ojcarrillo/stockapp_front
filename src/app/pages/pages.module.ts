@@ -23,6 +23,8 @@ import { CamaraComponent } from './otros/camara/camara.component';
 import { VerExistenciasBajasComponent } from './inventario/ver-existencias-bajas/ver-existencias-bajas.component';
 import { ArqueoCajaComponent } from './ventas/arqueo-caja/arqueo-caja.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { VerFacturaComponent } from './proveedores/ver-factura/ver-factura.component';
+import { DevolucionesComponent } from './ventas/devoluciones/devoluciones.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +37,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     CapturaFotosComponent,
     CamaraComponent,
     VerExistenciasBajasComponent,
-    ArqueoCajaComponent
+    ArqueoCajaComponent,
+    VerFacturaComponent,
+    DevolucionesComponent
   ],
   exports: [
     PagesComponent,

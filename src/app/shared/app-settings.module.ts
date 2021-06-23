@@ -100,3 +100,15 @@ export function formatDate(fecha: any, formato: string) {
     const formattedDate = datepipe.transform(fecha, formato);
     return formattedDate;
 }
+
+export function setFocus(nombre: string) {
+    window.document.getElementsByName(nombre)[0].focus();
+}
+
+export function getValueObject(obj: any, path: string) {
+    if (!path) { return obj; }
+    const properties = path.split('.');
+    return getValueObject(obj[properties.shift()], properties.join('.'));
+}
+
+

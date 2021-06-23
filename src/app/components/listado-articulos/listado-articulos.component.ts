@@ -21,6 +21,8 @@ export class ListadoArticulosComponent implements OnInit {
   @Input() verFiltro = false;
   @Input() width;
   @Input() existenciasBajas = null;
+  @Input() titulo;
+
   @Output() selectArticulo: EventEmitter<Articulo> = new EventEmitter();
 
 

@@ -1,0 +1,108 @@
+<div class="row" *ngIf="rndBuscador">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Ver Detalle de Factura de Compra</h2>
+                <div class="rcorners5px">
+                    <div class="row">
+                        <div class="col-3">
+                            <label class="p-2">Digite el número de factura:</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="text" class="form-control" name="numeroFactura" [(ngModel)]="numeroFactura" maxlength="15" size="15">
+                        </div>
+                        <div class="col-2">
+                            <button type="button" (click)="buscarFacturaCompra()" class="btn btn-info"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">Detalle de la Factura</h2>
+        <div class="rcorners5px">
+            <div class="row p-2">
+                <div class="col-2 py-2">
+                    <label for="">Número:</label>
+                </div>
+                <div class="col-2">
+                    <input type="text" disabled class="form-control" name="numerofactura" [ngModel]="factura.numeroFactura" maxlength="15" size="15">
+                </div>
+                <div class="col-2 py-2">
+                    <label for="">Fecha de Expedición:</label>
+                </div>
+                <div class="col-2">
+                    <input type="text" disabled class="form-control" name="fechaexpedicion" [ngModel]="formato(factura.fechaExpedicion)" size="15" maxlength="15">
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-2 py-2">
+                    <label for="">Proveedor Nit:</label>
+                </div>
+                <div class="col-2">
+                    <input type="text" class="form-control" name="nit" [ngModel]="factura.proveedor?.nit" disabled maxlength="15" size="15">
+                </div>
+                <div class="col-2 py-2">
+                    <label for="">Proveedor Nombre:</label>
+                </div>
+                <div class="col">
+                    <input type="text" class="form-control" name="nombre" [ngModel]="factura.proveedor?.nombre" disabled>
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-2 py-2">
+                    <label for="">Valor Iva:</label>
+                </div>
+                <div class="col-2">
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" disabled name="valoriva" [ngModel]="factura.valorIva" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                    </div>
+                </div>
+                <div class="col-2 py-2">
+                    <label for="">Valor Total:</label>
+                </div>
+                <div class="col-2">
+                    <div class="input-group">
+                        <span class="input-group-addon">$</span>
+                        <input type="text" disabled name="valortotal" [ngModel]="factura.valorFactura" appDigitOnly decimal="true" placeholder="0.00" inputmode="numeric" pattern="^\d{1,9}(\.\d{1,2})?$" class="form-control text-right" maxlength="15" size="15">
+                    </div>
+                </div>
+                <div class="col-2 py-2">
+                    <label for="">Fecha de Vencimiento:</label>
+                </div>
+                <div class="col-2">
+                    <input type="text" disabled class="form-control" name="fechavencimiento" [ngModel]="formato(factura.fechaVencimiento)" size="15" maxlength="15">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <mat-table #table [dataSource]="dataSource">
+                        <ng-container matColumnDef="rowNumber">
+                            <mat-header-cell *matHeaderCellDef class="text-light bg-dark"></mat-header-cell>
+                            <mat-cell *matCellDef="let i = index">
+                                {{ i + 1 }}
+                            </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="{{column.id}}" *ngFor="let column of colsArticulos">
+                            <mat-header-cell *matHeaderCellDef class="text-light bg-dark">
+                                {{column.value}}
+                            </mat-header-cell>
+                            <ng-container *ngIf="column.id !== 'bonificacion'; else activo">
+                                <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{ obtenerValor(element, column.id) }} </mat-cell>
+                            </ng-container>
+                            <ng-template #activo>
+                                <mat-cell *matCellDef="let element" class="table-bordered p-2"> {{element[column.id] ? 'Si' : 'No'}}</mat-cell>
+                            </ng-template>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; let even = even; columns: displayedColumns;" [ngClass]="{'highlight': selectRowIndex == row.pos, 'gray':even}"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
